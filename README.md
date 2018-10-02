@@ -9,7 +9,7 @@ Made with [Bulma](https://bulma.io).
 
 ## How to install
 
-Just drop the ``templates`` and ``public`` folders over your project root.  
+Just drop the ``templates/`` and the ``public/`` folder over your project root.  
 This will replace all of the default templates by Lagan.
 
 ## Screenshots
