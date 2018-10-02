@@ -12,6 +12,8 @@ Made with [Bulma](https://bulma.io).
 Just drop the ``templates/`` and the ``public/`` folder over your project root.  
 This will replace all of the default templates by Lagan.
 
+> Don't forget to clear the cache!
+
 ## Screenshots
 
 ![Screenshot 1](screenshots/Screenshot1.png)
