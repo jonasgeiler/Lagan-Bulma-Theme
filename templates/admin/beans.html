@@ -66,16 +66,6 @@
 					<td>{{ bean[properties[2].name]|striptags[:75] }}</td>
 {%		if position %}
 					<td>
-						<!--<div class="btn-group">
-							<!-- top ->
-							<span class="btn btn-default btn-xs move" data-action="{{ path_for('putbean', { 'beantype': beantype, 'id': bean.id }) }}" data-{{ position.name }}="0">&uarr;&uarr;</span>
-							<!-- up 1 ->
-							<span class="btn btn-default btn-xs move" data-action="{{ path_for('putbean', { 'beantype': beantype, 'id': bean.id }) }}" data-{{ position.name }}="{{ bean[position.name] - 1 }}">&uarr;</span>
-							<!-- down 1 ->
-							<span class="btn btn-default btn-xs move" data-action="{{ path_for('putbean', { 'beantype': beantype, 'id': bean.id }) }}" data-{{ position.name }}="{{ bean[position.name] + 1 }}">&darr;</span>
-							<!-- bottom->
-							<span class="btn btn-default btn-xs move" data-action="{{ path_for('putbean', { 'beantype': beantype, 'id': bean.id }) }}" data-{{ position.name }}="{{ search.total }}">&darr;&darr;</span>
-						</div>-->
 						<div class="buttons has-addons">
 							<a class="button is-small move" data-action="{{ path_for('putbean', { 'beantype': beantype, 'id': bean.id }) }}" data-{{ position.name }}="0">
 								<span class="icon">
