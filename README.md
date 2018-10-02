@@ -1,6 +1,6 @@
 # Lagan - Bulma-Theme for the Admin Panel
 
-This is a simple and beautiful admin theme I made for [Lagan](https://github.com/lutsen/lagan), a different take on a CMS, with a focus on flexibility.
+This is a simple and beautiful admin theme I made for [Lagan](https://github.com/lutsen/lagan), a different take on a CMS, with a focus on flexibility.  
 Made with [Bulma](https://bulma.io)
 
 ## Requirements
