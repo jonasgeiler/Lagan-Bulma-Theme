@@ -1,0 +1,61 @@
+{%	set title = 'Home' %}
+
+{% extends "admin/base.html" %}
+
+{% block content %}
+
+	<h1 class="title has-text-centered-mobile">Gameshell-Store Admin</h1>
+
+	<hr>
+
+{% for beantype in dashboard %}
+
+{% 	if (loop.index - 1) is divisible by(3) %}
+	<div class="columns">
+{% 	endif %}
+
+		<div class="column is-4">
+			<div class="panel">
+				<p class="panel-heading is-capitalized">
+					<a href="{{ path_for('listbeans', { 'beantype': beantype.name }) }}?limit=50">{{ beantype.name }}</a>
+				</p>
+
+				<div class="panel-block">
+					{{ beantype.description }}
+				</div>
+
+				<div class="panel-block is-size-7 has-text-grey">
+					Total entries:&nbsp;<b>{{ beantype.total }}</b>
+				</div>
+
+{% 	if beantype.modified %}
+				<div class="panel-block is-size-7 has-text-grey">
+					Latest update:&nbsp;<b><a href="{{ path_for('getbean', { 'beantype': beantype.name, 'id': beantype.modified.id }) }}">{{ beantype.modified.title }}</a></b>&nbsp;on&nbsp;<b>{{ beantype.modified.modified }}</b>
+				</div>
+{% 	endif %}
+
+{% 	if beantype.created %}
+				<div class="panel-block is-size-7 has-text-grey">
+					Newest entry:&nbsp;<b><a href="{{ path_for('getbean', { 'beantype': beantype.name, 'id': beantype.created.id }) }}">{{ beantype.created.title }}</a></b>&nbsp;on&nbsp;<b>{{ beantype.created.created }}</b>
+				</div>
+{% 	endif %}
+
+				<div class="panel-block has-background-light">
+					<a href="{{ path_for('listbeans', { 'beantype': beantype.name }) }}?limit=50" class="button is-small is-outlined is-fullwidth">View all</a>
+					<span>&nbsp;</span> <!-- Ugly gap -->
+					<a href="{{ path_for('addbean', { 'beantype': beantype.name }) }}" class="button is-small is-info is-fullwidth">Add new</a>
+				</div>
+
+			</div>
+		</div>
+
+{% 	if loop.index is divisible by(3) or loop.index == dashboard|length %}
+	</div><!-- End row -->
+{% 	endif %}
+
+{% endfor %}
+
+	<hr>
+	<p class="has-text-centered"><a href="https://www.laganphp.com/" target="_blank">Built with <b>Lagan</b>: any content, with a backend</a></p>
+
+{% endblock content %}

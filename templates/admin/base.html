@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex, nofollow" />
+		<title>{{ title }} - Gameshell-Store Admin</title>
+
+		{% block head %}
+		<!--
+		<!-- Bootstrap core CSS ->
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug ->
+		<link href="https://maxcdn.bootstrapcdn.com/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+		-->
+
+		<!-- Include jQuery in head to be able to use it in property templates -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+		{% endblock head %}
+
+		<!-- Custom styles for this template -->
+		<style type="text/css">
+			.is-sidebar-menu {
+				padding: 1.5rem;
+			}
+
+			.columns.is-fullheight {
+				min-height: calc(100vh - ( 3.25rem - .75rem ) );
+				max-height: calc(100vh - ( 3.25rem - .75rem ) );
+				height: calc(100vh - ( 3.25rem - .75rem ) );
+				display: flex;
+				flex-direction: row;
+				justify-content: stretch;
+			}
+
+			.columns.is-fullheight .column {
+				overflow-y: auto;
+			}
+
+			.menu-list a:hover {
+				background-color: #ececec;
+			}
+
+			.margin-top-20 {
+				margin-top: 20px;
+			}
+
+			@media screen and (max-width: 768px) {
+				.container.is-mobile {
+					margin-left: 20px;
+					margin-right: 20px;
+				}
+			}
+
+			/*
+			 * Required label
+			 */
+			.field.required .label:after {
+				content:" *";
+				color: red;
+			}
+		</style>
+
+		<script>
+			$(document).ready(function() {
+				// Check for click events on the navbar burger icon
+				$(".navbar-burger").click(function() {
+
+					// Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+					$(".navbar-burger").toggleClass("is-active");
+					$(".navbar-menu").toggleClass("is-active");
+
+				});
+			});
+		</script>
+
+	</head>
+	<body>
+		<nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+			<div class="navbar-brand">
+				<a class="navbar-item has-background-primary" href="{{ path_for('admin') }}">
+					<h1 class="title is-4 has-text-white">Lagan Admin</h1>
+				</a>
+
+				<a role="button" class="navbar-burger has-text-white" aria-label="menu" aria-expanded="false">
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+				</a>
+			</div>
+
+			<div class="navbar-menu">
+				<div class="navbar-end">
+					<a class="navbar-item" href="{{ app_url }}" target="_blank">
+						<span class="icon">
+							<i class="fa fa-eye"></i>
+						</span>
+						<span>View Website</span>
+					</a>
+				</div>
+			</div>
+		</nav>
+
+		<div>
+			<div class="columns is-fullheight">
+				<aside class="column is-2 is-sidebar-menu is-hidden-mobile has-background-light">
+					<p class="menu-label">
+						<br>Models:
+					</p>
+					<ul class="menu-list">
+						{% for beantype in beantypes %}
+						<li>
+							<div class="columns is-gapless">
+								<div class="column is-expanded">
+									<a class="is-capitalized has-text-link" href="{{ path_for('listbeans', { 'beantype': beantype }) }}?limit=50">{{ beantype }}</a>
+								</div>
+								<div class="column is-narrow">
+									<a href="{{ path_for('addbean', { 'beantype': beantype }) }}" class="addbean has-text-grey-light">
+										<span class="icon">
+											<i class="fa fa-plus"></i>
+										</span>
+									</a>
+								</div>
+							</div>
+						</li>
+						{% endfor %}
+					</ul>
+				</aside>
+
+				<div class="column margin-top-20 main">
+					<div class="container is-fluid is-mobile">
+						{% if flash.error or flash.success %}
+						<div class="notification {% if flash.error %} is-danger {% else %} is-success{% endif %} alert-dismissable">
+							<button class="delete"></button>
+							{% if flash.error %}{{ flash.error[0] }}{% else %}{{ flash.success[0] }}{% endif %}
+						</div>
+						{% endif %}
+
+						{% block content %}
+						{# Content from child template #}
+						{% endblock content %}
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		{% block javascript %}
+		<script>
+			$('.notification > .delete').on('click', function(e) {
+				e.preventDefault();
+				e.target.parentNode.remove();
+			});
+		</script>
+		{% endblock javascript %}
+
+	</body>
+</html>

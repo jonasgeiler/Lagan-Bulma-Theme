@@ -1,0 +1,12 @@
+<div class="field is-horizontal {% if property.required %} required {% endif %}">
+	<div class="field-label is-normal">
+		<label for="{{ property.name }}" class="label">{{ property.description }}</label>
+	</div>
+	<div class="field-body">
+		<div class="field">
+			<div class="control">
+				<input class="input" type="text" id="{{ property.name }}" name="{{ property.name }}" placeholder="{{ property.description }}" value="{{ bean[property.name] }}" {% if property.required %} required="required" {% endif %}>
+			</div>
+		</div>
+	</div>
+</div>

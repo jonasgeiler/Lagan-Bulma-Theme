@@ -1,0 +1,90 @@
+{% if bean %}
+{%	set title = bean.title %}
+{% else %}
+{%	set title = 'New ' ~ beantype %}
+{% endif %}
+
+{% extends "admin/base.html" %}
+
+{% block content %}
+
+	<h1 class="title has-text-centered-mobile">
+		{% if bean %}
+			{{ bean.title }} <small class="is-capitalized">({{ beantype }})</small>
+		{% else %}
+			New <span class="is-capitalized">{{ beantype }}</span>
+		{% endif %}
+	</h1>
+
+{% if bean %}
+	<h2 class="subtitle has-text-centered-mobile"><i>Created on {{ bean.created }}, last modified on {{ bean.modified }}.</i></h2>
+{% endif %}
+
+	<hr>
+
+	<form method="post" role="form" enctype="multipart/form-data" action="{% if bean %}{{ path_for('putbean', { 'beantype': beantype, 'id': bean.id }) }}{% else %}{{ path_for('postbean', { 'beantype': beantype }) }}{% endif %}">
+		<input type="hidden" name="_METHOD" value="{{ method }}"/>
+		<!-- CSRF Protection -->
+		<input type="hidden" name="{{ csrf.keys.name }}" value="{{ csrf.name }}">
+		<input type="hidden" name="{{ csrf.keys.value }}" value="{{ csrf.value }}">
+
+{% for property in beanproperties %}
+		{% include property.input ~ '/' ~ property.input ~ '.html' %}
+{% endfor %}
+
+		<hr>
+
+		<div class="field is-grouped is-grouped-right">
+			<div class="control is-expanded">
+				<button type="submit" class="button is-danger delete-btn">
+					<span class="icon">
+						<i class="fa fa-trash"></i>
+					</span>
+					<span>Delete</span>
+				</button>
+			</div>
+			<div class="control">
+				<button type="submit" class="button is-info is-outlined" name="submit" value="save">
+					<span class="icon">
+						<i class="fa fa-save"></i>
+					</span>
+					<span>Save</span>
+				</button>
+			</div>
+			<div class="control">
+				<button type="submit" class="button is-info" name="submit" value="saveandclose">
+					<span class="icon">
+						<i class="fa fa-save"></i>
+					</span>
+					<span>Save and close</span>
+				</button>
+			</div>
+		</div>
+	</form>
+
+{% endblock content %}
+
+{% block javascript %}
+	{{ parent() }}
+
+	<!-- Delete button -->
+	<script type="text/javascript">
+		$( '.delete-btn' ).on( 'click', function(e) {
+			e.preventDefault();
+			if( confirm( 'Are you sure you want to delete "{{ bean.title }}"?' ) ) {
+				var f = document.createElement('form');
+				$(this).after(
+					$(f).attr({
+						method: 'post',
+						action: $(this).attr('href')
+					})
+					.append('<input type="hidden" name="_METHOD" value="delete"/>')
+					// CSRF Protection
+					.append('<input type="hidden" name="{{ csrf.keys.name }}" value="{{ csrf.name }}">')
+					.append('<input type="hidden" name="{{ csrf.keys.value }}" value="{{ csrf.value }}">')
+				);
+				$(f).submit();
+			}
+		});
+	</script>
+{% endblock javascript %}

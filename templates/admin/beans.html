@@ -1,0 +1,196 @@
+{% if query|length > 0 %}
+{%	set title = beantype ~ ': search results for "' ~ query ~ '"' %}
+{% else %}
+{%	set title = beantype %}
+{% endif %}
+
+{% extends "admin/base.html" %}
+
+{% block content %}
+
+	<h1 class="title is-capitalized has-text-centered-mobile">{{ beantype }}{% if query|length > 0 %}: search results for "{{ query }}"{% endif %}</h1>
+	<h2 class="subtitle has-text-centered-mobile">{{ description }}</h2>
+
+	<hr>
+
+	<div class="columns is-mobile">
+
+		<div class="column">
+			<form method="get" action="{{ page_url }}">
+				<div class="field has-addons">
+					<div class="control">
+						<input name="*has" class="input" type="text" placeholder="Search...">
+					</div>
+					<div class="control">
+						<button type="submit" class="button is-info">
+							<span class="icon is-small">
+								<i class="fa fa-search"></i>
+							</span>
+						</button>
+					</div>
+				</div>
+			</form>
+
+		</div>
+
+		<div class="column is-narrow">
+			<a href="{{ path_for('addbean', { 'beantype': beantype }) }}" class="button is-success is-pulled-right">
+				<span class="icon is-small">
+					<i class="fa fa-plus"></i>
+				</span>
+				<span>Add new {{ beantype }}</span>
+			</a>
+		</div>
+
+	</div>
+
+{% if search.result|length > 0 %}
+		<table class="table is-hoverable is-fullwidth {% if search.result|length >= 5 %} is-striped {% endif %}">
+			<thead>
+				<tr>
+					<th>{{ properties[0].description }}</th>
+					<th>{{ properties[1].description }}</th>
+					<th>{{ properties[2].description }}</th>
+{% if position %}
+					<th>{{ position.description }}</th>
+{% endif %}
+					<th width="50">Edit</th>
+					<th width="50">Remove</th>
+				</tr>
+			</thead>
+			<tbody>
+{% 	for bean in search.result %}
+				<tr>
+					<td><a href="{{ path_for('getbean', { 'beantype': beantype, 'id': bean.id }) }}">{{ bean[properties[0].name]|striptags[:75] }}</a></td>
+					<td>{{ bean[properties[1].name]|striptags[:75] }}</td>
+					<td>{{ bean[properties[2].name]|striptags[:75] }}</td>
+{%		if position %}
+					<td>
+						<!--<div class="btn-group">
+							<!-- top ->
+							<span class="btn btn-default btn-xs move" data-action="{{ path_for('putbean', { 'beantype': beantype, 'id': bean.id }) }}" data-{{ position.name }}="0">&uarr;&uarr;</span>
+							<!-- up 1 ->
+							<span class="btn btn-default btn-xs move" data-action="{{ path_for('putbean', { 'beantype': beantype, 'id': bean.id }) }}" data-{{ position.name }}="{{ bean[position.name] - 1 }}">&uarr;</span>
+							<!-- down 1 ->
+							<span class="btn btn-default btn-xs move" data-action="{{ path_for('putbean', { 'beantype': beantype, 'id': bean.id }) }}" data-{{ position.name }}="{{ bean[position.name] + 1 }}">&darr;</span>
+							<!-- bottom->
+							<span class="btn btn-default btn-xs move" data-action="{{ path_for('putbean', { 'beantype': beantype, 'id': bean.id }) }}" data-{{ position.name }}="{{ search.total }}">&darr;&darr;</span>
+						</div>-->
+						<div class="buttons has-addons">
+							<a class="button is-small move" data-action="{{ path_for('putbean', { 'beantype': beantype, 'id': bean.id }) }}" data-{{ position.name }}="0">
+								<span class="icon">
+									<i class="fa fa-angle-double-up fa-lg"></i>
+								</span>
+							</a>
+							<a class="button is-small move" data-action="{{ path_for('putbean', { 'beantype': beantype, 'id': bean.id }) }}" data-{{ position.name }}="{{ bean[position.name] - 1 }}">
+								<span class="icon">
+									<i class="fa fa-angle-up fa-lg"></i>
+								</span>
+							</a>
+							<a class="button is-small move" data-action="{{ path_for('putbean', { 'beantype': beantype, 'id': bean.id }) }}" data-{{ position.name }}="{{ bean[position.name] + 1 }}">
+								<span class="icon">
+									<i class="fa fa-angle-down fa-lg"></i>
+								</span>
+							</a>
+							<a class="button is-small move" data-action="{{ path_for('putbean', { 'beantype': beantype, 'id': bean.id }) }}" data-{{ position.name }}="{{ search.total }}">
+								<span class="icon">
+									<i class="fa fa-angle-double-down fa-lg"></i>
+								</span>
+							</a>
+						</div>
+					</td>
+{%		endif %}
+					<td width="50">
+						<a href="{{ path_for('getbean', { 'beantype': beantype, 'id': bean.id }) }}" class="button is-warning is-small edit-btn">
+							<span class="icon">
+								<i class="fa fa-edit"></i>
+							</span>
+							<span>Edit</span>
+						</a>
+					</td>
+					<td width="50">
+						<form method="post" role="form" enctype="multipart/form-data" action="{{ path_for('deletebean', { 'beantype': beantype, 'id': bean.id }) }}">
+							<input type="hidden" name="_METHOD" value="delete"/>
+							<!-- CSRF Protection -->
+							<input type="hidden" name="{{ csrf.keys.name }}" value="{{ csrf.name }}">
+							<input type="hidden" name="{{ csrf.keys.value }}" value="{{ csrf.value }}">
+							<button type="submit" class="button is-small is-danger delete-btn" data-title="{{ bean.title }}">
+								<span class="icon">
+									<i class="fa fa-trash"></i>
+								</span>
+								<span>Delete</span>
+							</button>
+						</form>
+					</td>
+				</tr>
+{% 	endfor %}
+			</tbody>
+		</table>
+{% else %}
+	<hr>
+{%	if search.query %}
+	<p class="has-text-grey has-text-centered">There is no {{ beantype }} matching your search. You can <a href="{{ path_for('addbean', { 'beantype': beantype }) }}">add</a> one.</p>
+{%	else %}
+	<p class="has-text-grey has-text-centered">There is no {{ beantype }} yet. You can <a href="{{ path_for('addbean', { 'beantype': beantype }) }}">add</a> one.</p>
+{%	endif %}
+{% endif %}
+
+{% if search.pages and search.pages > 1 %}
+	<nav class="pagination is-centered" role="navigation" aria-label="pagination">
+		<ul class="pagination-list">
+{% 	for page in 1..search.pages %}
+			<li>
+				<a class="pagination-link {% if search.page == page-1 %}is-current{% endif %}" href="{{ page_url }}{% if search.query %}?{{ search.query }}&{% else %}?{% endif %}limit={{ search.limit }}&offset={{ (page - 1) * search.limit }}" aria-label="Page {{ page }}" aria-current="page">{{ page }}</a>
+			</li>
+{% 	endfor %}
+		</ul>
+	</nav>
+{% endif %}
+
+{% endblock content %}
+
+{% block javascript %}
+	{{ parent() }}
+
+	<script type="text/javascript">
+
+		// Create a HTML form and submit it.
+		// This keeps the code more readbale
+		$( '.move' ).on( 'click', function(e) {
+			e.preventDefault();
+			var newForm = $( '<form>', {
+				'action': $(this).data('action'),
+				'method': 'post',
+				'enctype': 'multipart/form-data'
+			}).append( $('<input>', {
+				'name': '_METHOD',
+				'value': 'put'
+			})).append( $('<input>', {
+				'name': '{{ position.name }}',
+				'value': $(this).data('{{ position.name }}')
+			})).append( $('<input>', {
+				'name': 'submit',
+				'value': 'saveandclose',
+				'type': 'submit',
+				'id': 'submit'
+			})).append( $('<input>', {
+				'type': 'hidden',
+				'name': '{{ csrf.keys.name }}',
+				'value': '{{ csrf.name }}'
+			})).append( $('<input>', {
+				'type': 'hidden',
+				'name': '{{ csrf.keys.value }}',
+				'value': '{{ csrf.value }}'
+			}));
+			newForm.hide().appendTo('body');
+			$('#submit').click(); // Do it this way because submit button also has value.
+		});
+
+		$( '.delete-btn' ).on( 'click', function(e) {
+			e.preventDefault();
+			if( confirm( 'Are you sure you want to delete "' + $(this).data('title') + '"?' ) ) {
+				$(this).parent().submit();
+			}
+		});
+	</script>
+{% endblock javascript %}

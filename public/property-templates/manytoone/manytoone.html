@@ -1,0 +1,18 @@
+<div class="field is-horizontal {% if property.required %} required {% endif %}">
+	<div class="field-label is-normal">
+		<label for="{{ property.name }}" class="label">{{ property.description }}</label>
+	</div>
+	<div class="field-body">
+		<div class="field is-narrow">
+			<div class="control">
+				<div class="select is-fullwidth">
+					<select id="{{ property.name }}" name="{{ property.name }}" {% if property.required %} required="required" {% endif %}>
+						{% for option in property.options %}
+						<option value="{{ option.id }}" {% if bean[property.name ~ '_id'] == option.id %} selected="selected" {% endif %}>{{ option.title }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
