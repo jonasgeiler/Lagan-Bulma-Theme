@@ -112,14 +112,14 @@
 						<br>Models:
 					</p>
 					<ul class="menu-list">
-						{% for beantype in beantypes %}
+						{% for item_beantype in beantypes %}
 						<li>
 							<div class="columns is-gapless">
 								<div class="column is-expanded">
-									<a class="is-capitalized has-text-link" href="{{ path_for('listbeans', { 'beantype': beantype }) }}?limit=50">{{ beantype }}</a>
+									<a class="is-capitalized has-text-link" href="{{ path_for('listbeans', { 'beantype': item_beantype }) }}?limit=50">{% if item_beantype == beantype %}>{% endif %} {{ item_beantype }}</a>
 								</div>
 								<div class="column is-narrow">
-									<a href="{{ path_for('addbean', { 'beantype': beantype }) }}" class="addbean has-text-grey-light">
+									<a href="{{ path_for('addbean', { 'beantype': item_beantype }) }}" class="addbean has-text-grey-light">
 										<span class="icon">
 											<i class="fa fa-plus"></i>
 										</span>
