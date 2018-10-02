@@ -8,14 +8,6 @@
 		<title>{{ title }} - Lagan Admin</title>
 
 		{% block head %}
-		<!--
-		<!-- Bootstrap core CSS ->
-		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-
-		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug ->
-		<link href="https://maxcdn.bootstrapcdn.com/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-		-->
-
 		<!-- Include jQuery in head to be able to use it in property templates -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
@@ -25,14 +17,15 @@
 
 		<!-- Custom styles for this template -->
 		<style type="text/css">
+			/* Remove weird scrollbar */
 			html {
 				overflow-y: auto;
 			}
 
+			/* Full-Height Sidebar */
 			.is-sidebar-menu {
 				padding: 1.5rem;
 			}
-
 			.columns.is-fullheight {
 				min-height: calc(100vh - ( 3.25rem - .75rem ) );
 				max-height: calc(100vh - ( 3.25rem - .75rem ) );
@@ -41,19 +34,21 @@
 				flex-direction: row;
 				justify-content: stretch;
 			}
-
 			.columns.is-fullheight .column {
 				overflow-y: auto;
 			}
 
+			/* Change grey level (default hover-color is the same as background-color) */
 			.menu-list a:hover {
 				background-color: #ececec;
 			}
 
+			/* Useful little class to have a simple spacer */
 			.margin-top-20 {
 				margin-top: 20px;
 			}
 
+			/* Left and right margin on mobile */
 			@media screen and (max-width: 768px) {
 				.container.is-mobile {
 					margin-left: 20px;
