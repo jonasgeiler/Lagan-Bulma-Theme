@@ -1,0 +1,15 @@
+<input type="hidden" value="0" name="{{ property.name }}">
+<div class="field is-horizontal {% if property.required %} required {% endif %}">
+	<div class="field-label">
+		<label for="{{ property.name }}" class="label">{{ property.description }}</label>
+	</div>
+	<div class="field-body">
+		<div class="field">
+			<div class="control">
+				<label class="checkbox">
+					<input type="checkbox" id="{{ property.name }}" name="{{ property.name }}" {% if bean[property.name] %} checked {% endif %} {% if property.required %} required="required" {% endif %}>
+				</label>
+			</div>
+		</div>
+	</div>
+</div>
